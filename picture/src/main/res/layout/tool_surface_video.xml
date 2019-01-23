@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 可以修改为 merge -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.tool.picture.components.video.SurfaceVideoView
+        android:id="@+id/svv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <ImageView
+        android:id="@+id/iv_screenshot"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btn_play"
+        android:background="@drawable/tool_svg_play_24dp"
+        android:layout_centerInParent="true"
+        android:layout_width="45dp"
+        android:layout_height="45dp" />
+
+    <com.tool.picture.components.progressimg.CircleProgressView
+        android:id="@+id/cpv"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="45dp"
+        android:layout_height="45dp" />
+
+</RelativeLayout>

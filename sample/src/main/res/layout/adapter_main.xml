@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.tool.picture.components.progressimg.ProgressImageView
+        android:id="@+id/img"
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
+    <com.tool.picture.components.progressimg.CircleProgressView
+        android:id="@+id/progressView1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:progress="0"
+        android:visibility="gone"
+        app:cpv_innerPadding="2dp"
+        app:cpv_outerColor="@color/transparent90_white"
+        app:cpv_outerSize="1dp"
+        app:cpv_progressNormalColor="@color/transparent"
+        app:cpv_progressReachColor="@color/transparent90_white"
+        app:cpv_progressStyle="FillInnerArc"/>
+</RelativeLayout>

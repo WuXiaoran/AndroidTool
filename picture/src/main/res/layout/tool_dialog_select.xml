@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/tool_radius5fc"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_take_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="拍照"
+            android:textColor="#007AFF"
+            android:padding="12dp"
+            android:textSize="15sp"
+            android:gravity="center"/>
+        <View
+            android:id="@+id/v_1"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#9D9D9D"/>
+        <TextView
+            android:id="@+id/tv_go_album"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="相册"
+            android:textColor="#007AFF"
+            android:padding="12dp"
+            android:textSize="15sp"
+            android:gravity="center"/>
+        <View
+            android:id="@+id/v_2"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#9D9D9D"/>
+        <TextView
+            android:id="@+id/tv_videotape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="录像"
+            android:textColor="#007AFF"
+            android:padding="12dp"
+            android:textSize="15sp"
+            android:gravity="center"/>
+        <View
+            android:id="@+id/v_3"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#9D9D9D"/>
+        <TextView
+            android:id="@+id/tv_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="视频"
+            android:textColor="#007AFF"
+            android:padding="12dp"
+            android:textSize="15sp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:textColor="#007AFF"
+        android:padding="12dp"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@drawable/tool_radius5ff"
+        android:layout_marginBottom="8dp"/>
+    
+    
+</LinearLayout>

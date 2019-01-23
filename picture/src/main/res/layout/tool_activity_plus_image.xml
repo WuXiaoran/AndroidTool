@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_image"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:background="@mipmap/tool_img_back" />
+
+                <!--图片位置-->
+                <TextView
+                    android:id="@+id/tv_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/iv_back"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    tools:text="1/1" />
+
+                <ImageView
+                    android:id="@+id/iv_delete"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:contentDescription="@null"
+                    android:padding="10dp"
+                    android:scaleType="centerCrop"
+                    android:background="@mipmap/tool_img_delete" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <ImageView
+            android:id="@+id/iv_back_gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/tool_img_back"
+            android:padding="12dp"
+            android:visibility="gone"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <!--图片位置-->
+        <TextView
+            android:id="@+id/tv_position_gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/iv_back"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:text="1/1"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</LinearLayout>
