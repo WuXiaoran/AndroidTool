@@ -4,7 +4,7 @@ Android快速开发工具
 项目依赖
 [![](https://jitpack.io/v/WuXiaoran/AndroidTool.svg)](https://jitpack.io/#WuXiaoran/AndroidTool)
 
-项目的build.gradle添加依赖  `implementation 'com.github.WuXiaoran:AndroidTool:0.1'`
+项目的build.gradle添加依赖  `implementation 'com.github.WuXiaoran:AndroidTool:v0.1'`
 
 主要功能：
 1.多图上传及单视频上传组件
