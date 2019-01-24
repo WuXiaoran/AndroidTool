@@ -3,7 +3,7 @@ Android快速开发工具
 
 项目依赖
 [![](https://jitpack.io/v/WuXiaoran/AndroidTool.svg)](https://jitpack.io/#WuXiaoran/AndroidTool)
-s
+
 项目的build.gradle添加依赖  `implementation 'com.github.WuXiaoran:AndroidTool:0.1'`
 
 主要功能：
