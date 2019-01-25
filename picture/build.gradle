@@ -37,9 +37,9 @@ dependencies {
     api 'jp.wasabeef:glide-transformations:3.0.1'
 
     // 这两行是为了解决 https://github.com/bumptech/glide/issues/3185 ——Glide 中的注解还没有完全兼容androidx
-    implementation "com.android.support:support-annotations:28.0.0-alpha3"
-    annotationProcessor "com.android.support:support-annotations:28.0.0-alpha3"
-    implementation 'com.android.support:recyclerview-v7:28.0.3'
+    implementation "com.android.support:support-annotations:$rootProject.ext.buildToolsVersion"
+    annotationProcessor "com.android.support:support-annotations:$rootProject.ext.buildToolsVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.buildToolsVersion"
     api ('com.github.LuckSiege.PictureSelector:picture_library:v2.2.3') {
         exclude group: 'com.github.bumptech.glide'
     }

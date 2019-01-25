@@ -2,9 +2,14 @@ package com.example.ran.androidmodule;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +23,10 @@ import com.example.ran.androidmodule.utils.GlideUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.tool.network.retrofit.http.HttpManager;
+import com.tool.network.retrofit.listener.HttpOnNextListener;
+import com.tool.network.retrofit.listener.upload.ProgressRequestBody;
+import com.tool.network.retrofit.listener.upload.UploadProgressListener;
 import com.tool.picture.components.photoviewer.PhotoViewer;
 import com.tool.picture.components.progressimg.CircleProgressView;
 import com.tool.picture.components.progressimg.OnProgressListener;
@@ -26,14 +35,16 @@ import com.tool.picture.components.richtext.RichText;
 import com.tool.picture.components.richtext.RichTextEditor;
 import com.tool.picture.components.richtext.RichTextView;
 import com.tool.picture.components.upload.UploadConfig;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends RxAppCompatActivity {
 
     private ProgressImageView img;
     private CircleProgressView circleProgressView;
@@ -164,6 +175,34 @@ public class MainActivity extends AppCompatActivity {
         // 编辑-》onActivityResult有相关示例
         // 预览-》借用了banner的点击事件
         ///// 富文本 end /////
+        HttpManager manager = HttpManager.getInstance();
+        manager.doHttpDeal(new TestApi().getAllVedioBys(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+
+            }
+        },this,true));
+
+        File file = new File("/storage/emulated/0/Download/11.jpg");
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("file_name", file.getName(), new ProgressRequestBody
+                (requestBody,
+                        new UploadProgressListener() {
+                            @Override
+                            public void onProgress(final long currentBytesCount, final long totalBytesCount) {
+
+                                /*回到主线程中，可通过timer等延迟或者循环避免快速刷新数据*/
+                                Observable.just(currentBytesCount).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Long>() {
+
+                                    @Override
+                                    public void call(Long aLong) {
+//                                        tvMsg.setText("提示:上传中");
+//                                        progressBar.setMax((int) totalBytesCount);
+//                                        progressBar.setProgress((int) currentBytesCount);
+                                    }
+                                });
+                            }
+                        }));
     }
 
     public class GlideImageLoader extends ImageLoader {

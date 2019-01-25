@@ -1,1 +1,1 @@
-include ':sample', ':picture'
+include ':sample', ':picture', ':network'

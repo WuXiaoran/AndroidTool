@@ -9,6 +9,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        packagingOptions {
+            exclude 'META-INF/rxjava.properties'
+        }
     }
     buildTypes {
         release {
@@ -25,6 +28,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation project(':picture')
+    //    implementation project(':picture')
     implementation 'com.youth.banner:banner:1.4.10'
+    implementation 'com.github.WuXiaoran:AndroidTool:v0.1'
+    implementation project(':network')
 }
