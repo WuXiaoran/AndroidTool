@@ -9,7 +9,7 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
  * @描述          简单使用的Api
  **/
 public abstract class SimpleApi<T> extends BaseApi<T> {
-    public SimpleApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity) {
-        super(listener, rxAppCompatActivity);
+    public SimpleApi(RxAppCompatActivity rxAppCompatActivity, HttpOnNextListener listener) {
+        super(rxAppCompatActivity, listener);
     }
 }

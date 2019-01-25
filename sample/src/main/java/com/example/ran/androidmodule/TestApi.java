@@ -11,9 +11,8 @@ import retrofit2.Retrofit;
 import rx.Observable;
 
 public class TestApi {
-    public BaseApi getAllVedioBys(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity,
-                                  final boolean once_no){
-        return new SimpleApi<List<SubjectResulte>>(listener,rxAppCompatActivity){
+    public BaseApi getAllVedioBys(final boolean once_no, RxAppCompatActivity rxAppCompatActivity, HttpOnNextListener listener){
+        return new SimpleApi<List<SubjectResulte>>(rxAppCompatActivity,listener){
             @Override
             public Observable getObservable(Retrofit retrofit) {
                 return retrofit.create(HttpPostService.class).getAllVedioBy(once_no);

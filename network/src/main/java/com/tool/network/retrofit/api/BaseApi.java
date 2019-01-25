@@ -48,7 +48,7 @@ public abstract class BaseApi<T> implements Func1<BaseResultEntity<T>, T> {
     // 缓存url-可手动设置
     protected String cacheUrl;
 
-    public BaseApi(HttpOnNextListener listener, RxAppCompatActivity rxAppCompatActivity) {
+    public BaseApi(RxAppCompatActivity rxAppCompatActivity,HttpOnNextListener listener) {
         setListener(listener);
         setRxAppCompatActivity(rxAppCompatActivity);
         setShowProgress(true);
@@ -89,7 +89,6 @@ public abstract class BaseApi<T> implements Func1<BaseResultEntity<T>, T> {
         this.connectionTime = connectionTime;
         return this;
     }
-
 
     public String getMethod() {
         return method;

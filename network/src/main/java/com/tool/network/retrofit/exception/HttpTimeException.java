@@ -18,7 +18,6 @@ public class HttpTimeException extends RuntimeException {
 
     /**
      * 转换错误数据
-     *
      * @param code
      * @return
      */
@@ -31,7 +30,6 @@ public class HttpTimeException extends RuntimeException {
             default:
                 message = "error";
                 break;
-
         }
         return message;
     }

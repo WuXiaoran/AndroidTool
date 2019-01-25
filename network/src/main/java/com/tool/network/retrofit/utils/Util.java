@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tool.network.retrofit.ContentType;
+import com.tool.network.retrofit.ResponseCallback;
+import com.tool.network.retrofit.UploadRequestBody;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -91,7 +93,7 @@ public class Util {
     @NonNull
     public static RequestBody createBody(File file, ContentType type) {
         checkNotNull(file, "file not be null!");
-        checkNotNull(file, "type not be null!");
+        checkNotNull(type, "type not be null!");
         return createBody(file, typeToString(type));
     }
 
@@ -168,27 +170,27 @@ public class Util {
 
     }
 
-//    /**
-//     * createRequestBody
-//     * @param file file
-//     * @param type  see {@link ContentType}
-//     * @return NovateRequestBody
-//     */
-//    @NonNull
-//    public static NovateRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type) {
-//        return createRequestBody(file, type, null);
-//    }
-//
-//    /**
-//     * createRequestBody
-//     * @param file file
-//     * @param type  see {@link ContentType}
-//     * @return NovateRequestBody
-//     */
-//    @NonNull
-//    public static NovateRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type, ResponseCallback callback) {
-//        return new NovateRequestBody(createBody(file, type), callback);
-//    }
+    /**
+     * createRequestBody
+     * @param file file
+     * @param type  see {@link ContentType}
+     * @return UploadRequestBody
+     */
+    @NonNull
+    public static UploadRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type) {
+        return createRequestBody(file, type, null);
+    }
+
+    /**
+     * createRequestBody
+     * @param file file
+     * @param type  see {@link ContentType}
+     * @return UploadRequestBody
+     */
+    @NonNull
+    public static UploadRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type, ResponseCallback callback) {
+        return new UploadRequestBody(createBody(file, type), callback);
+    }
 
     @NonNull
     public static MultipartBody.Part createPart(String partName ,File file) {
@@ -208,91 +210,91 @@ public class Util {
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
 
-//    @NonNull
-//    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
-//        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
-//        // use the FileUtils to get the actual file by uri
-//        File file = FileUtil.getUirFile(fileUri);
-//        // create RequestBody instance from file
-//        RequestBody requestFile =
-//                RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file);
-//
-//        // MultipartBody.Part is used to send also the actual file name
-//        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
-//    }
+    @NonNull
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
+        // use the FileUtils to get the actual file by uri
+        File file = FileUtil.getUirFile(fileUri);
+        // create RequestBody instance from file
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file);
+
+        // MultipartBody.Part is used to send also the actual file name
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
 
 
-//    /**
-//     * create MultipartBody Parts
-//     * @param partName
-//     * @param maps Files
-//     * @param type ContentType type
-//     * @param callback ResponseCallback
-//     * @return  Map<String, MultipartBody.Part>
-//     */
-//    @NonNull
-//    public static  Map<String, MultipartBody.Part> createParts(String partName , Map<String, File> maps, @NonNull ContentType type, ResponseCallback callback ) {
-//        // create RequestBody instance from file
-//        Map<String, MultipartBody.Part> parts = new HashMap<>();
-//        if (maps != null && maps.size() > 0) {
-//            Iterator<String> keys = maps.keySet().iterator();
-//            NovateRequestBody requestBody = null;
-//            while(keys.hasNext()){
-//                String i = keys.next();
-//                File file = maps.get(i);
-//                if (!FileUtil.exists(file)) {
-//                    throw new Resources.NotFoundException(file.getPath() + "file 路径无法找到");
-//                } else {
-//                    requestBody = createRequestBody(file, type, callback);
-//                    // MultipartBody.Part is used to send also the actual file name
-//                    MultipartBody.Part body =
-//                            MultipartBody.Part.createFormData(partName, file.getName(), requestBody);
-//                    parts.put(i, body);
-//                }
-//            }
-//        }
-//        return parts;
-//    }
+    /**
+     * create MultipartBody Parts
+     * @param partName
+     * @param maps Files
+     * @param type ContentType type
+     * @param callback ResponseCallback
+     * @return  Map<String, MultipartBody.Part>
+     */
+    @NonNull
+    public static  Map<String, MultipartBody.Part> createParts(String partName , Map<String, File> maps, @NonNull ContentType type, ResponseCallback callback ) {
+        // create RequestBody instance from file
+        Map<String, MultipartBody.Part> parts = new HashMap<>();
+        if (maps != null && maps.size() > 0) {
+            Iterator<String> keys = maps.keySet().iterator();
+            UploadRequestBody requestBody = null;
+            while(keys.hasNext()){
+                String i = keys.next();
+                File file = maps.get(i);
+                if (!FileUtil.exists(file)) {
+                    throw new Resources.NotFoundException(file.getPath() + "file 路径无法找到");
+                } else {
+                    requestBody = createRequestBody(file, type, callback);
+                    // MultipartBody.Part is used to send also the actual file name
+                    MultipartBody.Part body =
+                            MultipartBody.Part.createFormData(partName, file.getName(), requestBody);
+                    parts.put(i, body);
+                }
+            }
+        }
+        return parts;
+    }
 
-//    /**
-//     * create MultipartBody Parts
-//     * @param partName
-//     * @param list List<File>
-//     * @param type ContentType type
-//     * @param callback ResponseCallback
-//     * @return  Map<String, MultipartBody.Part>
-//     */
-//    @NonNull
-//    public static List<MultipartBody.Part> createPartLists(String partName , List<File> list, @NonNull ContentType type, ResponseCallback callback ) {
-//        List<MultipartBody.Part> parts = new ArrayList<>();
-//        if (list!= null && list.size() > 0) {
-//
-//            NovateRequestBody requestBody = null;
-//            for (File file: list) {
-//                if (!FileUtil.exists(file)) {
-//                    throw new Resources.NotFoundException(file.getPath() + "file 路径无法找到");
-//                } else {
-//                    requestBody = createRequestBody(file, type, callback);
-//                    // MultipartBody.Part is used to send also the actual file name
-//                    MultipartBody.Part body =
-//                            MultipartBody.Part.createFormData(partName, file.getName(), requestBody);
-//                    parts.add(body);
-//                }
-//            }
-//        }
-//        return parts;
-//    }
+    /**
+     * create MultipartBody Parts
+     * @param partName
+     * @param list List<File>
+     * @param type ContentType type
+     * @param callback ResponseCallback
+     * @return  Map<String, MultipartBody.Part>
+     */
+    @NonNull
+    public static List<MultipartBody.Part> createPartLists(String partName , List<File> list, @NonNull ContentType type, ResponseCallback callback ) {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+        if (list!= null && list.size() > 0) {
+
+            UploadRequestBody requestBody = null;
+            for (File file: list) {
+                if (!FileUtil.exists(file)) {
+                    throw new Resources.NotFoundException(file.getPath() + "file 路径无法找到");
+                } else {
+                    requestBody = createRequestBody(file, type, callback);
+                    // MultipartBody.Part is used to send also the actual file name
+                    MultipartBody.Part body =
+                            MultipartBody.Part.createFormData(partName, file.getName(), requestBody);
+                    parts.add(body);
+                }
+            }
+        }
+        return parts;
+    }
 
 
-//    /** createNovateRequestBody
-//     * @param requestBody requestBody
-//     * @param callback  ResponseCallback
-//     * @return NovateRequestBody
-//     */
-//    @NonNull
-//    public static NovateRequestBody createNovateRequestBody(RequestBody requestBody, ResponseCallback callback) {
-//        return new NovateRequestBody(requestBody, callback);
-//    }
+    /** createNovateRequestBody
+     * @param requestBody requestBody
+     * @param callback  ResponseCallback
+     * @return UploadRequestBody
+     */
+    @NonNull
+    public static UploadRequestBody createNovateRequestBody(RequestBody requestBody, ResponseCallback callback) {
+        return new UploadRequestBody(requestBody, callback);
+    }
 
 
     public static <T> List<T> jsonToList(String json, Class<T> clazz) {
