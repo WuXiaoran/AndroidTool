@@ -13,11 +13,11 @@ Android快速开发工具
   
 多图上传及单视频上传组件   
 -
-```
+```JavaScript
 UploadConfig uploadConfig = new UploadConfig(this,RecyclerView,newArrayList<LocalMedia(),UploadConfig.SELECT_PIC_NUM_9,UploadConfig.SELECT_PIC_NUM_3);  
 RecyclerView.setAdapter(uploadConfig.getAdapter());
 ```  
-```  
+```JavaScript  
 @Override
 protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -42,7 +42,7 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
 ---  
 ####单图
 
-```
+```JavaScript
 PhotoViewer photoViewer = new PhotoViewer();
 photoViewer.setClickSingleImg("https://www.duba.com/static/images/public/20181115/4a5d2d7608a3d088c0d0ea5fe5c77c08.gif", img)
         .setShowImageViewInterface(new PhotoViewer.ShowImageViewInterface() {
@@ -54,7 +54,7 @@ photoViewer.setClickSingleImg("https://www.duba.com/static/images/public/2018111
         .start(MainActivity.this);
 ```  
 ####多图
-```  
+```JavaScript
 PhotoViewer photoViewer = new PhotoViewer();
 photoViewer.setData(picData)
         .setShowImageViewInterface(new PhotoViewer.ShowImageViewInterface() {
@@ -71,7 +71,7 @@ photoViewer.setData(picData)
 富文本编辑及预览 
 ---
 ####编辑
-```
+```JavaScript
 // 富文本示例
 List<LocalMedia> picList = PictureSelector.obtainMultipleResult(data);
 if (picList.size() > 0){
@@ -87,20 +87,20 @@ editor.insertImage("http://eb18035.ebenny.com/socialfianace/upload/video/1545669
 editor.getViewData();
 ```
 ####预览
-```
+```JavaScript
 RichText.ViewData viewData = new RichText.ViewData();
 richTextView.setViewData(dataList);
 ```
 
 视频的简易预览 
 ---
-```
+```JavaScript
 VideoPreview.preview(activity,pic.path);
 ```
 
 带进度图片
 ---
-```
+```JavaScript
 img.load("https://www.duba.com/static/images/public/20181115/4a5d2d7608a3d088c0d0ea5fe5c77c08.gif", R.mipmap.icon_default_store, new OnProgressListener() {
     @Override
     public void onProgress(boolean isComplete, int percentage, long bytesRead, long totalBytes) {
