@@ -36,4 +36,35 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
         }
     }
 }
+```  
+  
+查看大图
+---  
+单图
+-------
+```
+PhotoViewer photoViewer = new PhotoViewer();
+photoViewer.setClickSingleImg("https://www.duba.com/static/images/public/20181115/4a5d2d7608a3d088c0d0ea5fe5c77c08.gif", img)
+        .setShowImageViewInterface(new PhotoViewer.ShowImageViewInterface() {
+            @Override
+            public void show(ProgressImageView iv, String url) {
+                GlideUtil.loadImage(MainActivity.this, url, iv);
+            }
+        })
+        .start(MainActivity.this);
+```  
+多图
+-------  
+```  
+PhotoViewer photoViewer = new PhotoViewer();
+photoViewer.setData(picData)
+        .setShowImageViewInterface(new PhotoViewer.ShowImageViewInterface() {
+            @Override
+            public void show(ProgressImageView iv, String url) {
+                GlideUtil.loadImage(MainActivity.this, url, iv);
+            }
+        })
+        .setCurrentPage(position)
+        .setImgContainer(banner)
+        .start(MainActivity.this);
 ```
