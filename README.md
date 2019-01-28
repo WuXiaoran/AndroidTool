@@ -40,8 +40,8 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
   
 查看大图
 ---  
-单图
--------
+####单图
+
 ```
 PhotoViewer photoViewer = new PhotoViewer();
 photoViewer.setClickSingleImg("https://www.duba.com/static/images/public/20181115/4a5d2d7608a3d088c0d0ea5fe5c77c08.gif", img)
@@ -53,8 +53,7 @@ photoViewer.setClickSingleImg("https://www.duba.com/static/images/public/2018111
         })
         .start(MainActivity.this);
 ```  
-多图
--------  
+####多图
 ```  
 PhotoViewer photoViewer = new PhotoViewer();
 photoViewer.setData(picData)
@@ -67,4 +66,52 @@ photoViewer.setData(picData)
         .setCurrentPage(position)
         .setImgContainer(banner)
         .start(MainActivity.this);
+```
+
+富文本编辑及预览 
+---
+####编辑
+```
+// 富文本示例
+List<LocalMedia> picList = PictureSelector.obtainMultipleResult(data);
+if (picList.size() > 0){
+    if (picList.get(0).getPictureType().contains("image")){
+        editor.insertImage(picList.get(0).getCompressPath(),RichText.IMAGE);
+    }else{
+        editor.insertImage(picList.get(0).getPath(),RichText.VIDEO);
+    }
+}
+// 加载网络图片或视频会进度提示
+editor.insertImage("http://eb18035.ebenny.com/socialfianace/upload/video/1545669058794.mp4",RichText.VIDEO,500,500);
+// 获取编辑数据
+editor.getViewData();
+```
+####预览
+```
+RichText.ViewData viewData = new RichText.ViewData();
+richTextView.setViewData(dataList);
+```
+
+视频的简易预览 
+---
+```
+VideoPreview.preview(activity,pic.path);
+```
+
+带进度图片
+---
+```
+img.load("https://www.duba.com/static/images/public/20181115/4a5d2d7608a3d088c0d0ea5fe5c77c08.gif", R.mipmap.icon_default_store, new OnProgressListener() {
+    @Override
+    public void onProgress(boolean isComplete, int percentage, long bytesRead, long totalBytes) {
+        if (isComplete) {
+            circleProgressView.setVisibility(View.GONE);
+        } else {
+            circleProgressView.setVisibility(View.VISIBLE);
+            circleProgressView.setProgress(percentage);
+        }
+    }
+    @Override
+    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) { }
+});
 ```
