@@ -20,23 +20,19 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 
-import com.tool.network.retrofit.ConfigLoader;
+import com.tool.network.retrofit.ToolRetrofit;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -817,7 +813,7 @@ public class FileUtil {
         }
 
         if (TextUtils.isEmpty(savePath)) {
-            savePath = FileUtil.getDownLoadPath(ConfigLoader.getContext());
+            savePath = FileUtil.getDownLoadPath(ToolRetrofit.getApplication());
         }
 
         return createFile(savePath, fileName);

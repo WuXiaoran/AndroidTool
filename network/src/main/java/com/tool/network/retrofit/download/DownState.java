@@ -1,10 +1,10 @@
 package com.tool.network.retrofit.download;
 
 /**
- * 下载状态
- * Created by WZG on 2016/10/21.
- */
-
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:04
+ * @描述          下载状态
+ **/
 public enum  DownState {
     START(0),
     DOWN(1),

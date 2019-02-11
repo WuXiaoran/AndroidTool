@@ -6,12 +6,19 @@ import android.util.Log;
 import com.tool.network.retrofit.api.BaseApi;
 import com.tool.network.retrofit.exception.RetryWhenNetworkException;
 import com.tool.network.retrofit.http.cookie.CookieInterceptor;
+import com.tool.network.retrofit.http.header.AbsRequestInterceptor;
+import com.tool.network.retrofit.http.header.BaseHeaderInterceptor;
 import com.tool.network.retrofit.listener.HttpOnNextListener;
 import com.tool.network.retrofit.subscribers.ProgressSubscriber;
 import com.trello.rxlifecycle.android.ActivityEvent;
 
 import java.lang.ref.SoftReference;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -44,29 +51,36 @@ public class ToolRetrofit {
 
     /**
      * 处理http请求
-     *
      * @param basePar 封装的请求数据
      */
     public static void http(BaseApi basePar) {
-        //手动创建一个OkHttpClient并设置超时时间缓存等设置
+        // 手动创建一个OkHttpClient并设置超时时间缓存等设置
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(basePar.getConnectionTime(), TimeUnit.SECONDS);
         builder.addInterceptor(new CookieInterceptor(basePar.isCache(), basePar.getUrl()));
         if(ToolRetrofit.isDebug()){
             builder.addInterceptor(getHttpLoggingInterceptor());
         }
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/json");
+        builder.addInterceptor(new BaseHeaderInterceptor(headers,AbsRequestInterceptor.Type.ADD));
+        builder.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String s, SSLSession sslSession) {
+                return true;
+            }
+        });
 
-
-        /*创建retrofit对象*/
+        /* 创建retrofit对象 */
         Retrofit retrofit = new Retrofit.Builder()
                 .client(builder.build())
+                .addConverterFactory(NoBodyConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(basePar.getBaseUrl())
                 .build();
 
-
-        /*rx处理*/
+        /* rx处理 */
         ProgressSubscriber subscriber = new ProgressSubscriber(basePar);
         Observable observable = basePar.getObservable(retrofit)
                 /*失败后的retry配置*/
@@ -84,13 +98,13 @@ public class ToolRetrofit {
                 .map(basePar);
 
 
-        /*链接式对象返回*/
+        /* 链接式对象返回 */
         SoftReference<HttpOnNextListener> httpOnNextListener = basePar.getListener();
         if (httpOnNextListener != null && httpOnNextListener.get() != null) {
             httpOnNextListener.get().onNext(observable);
         }
 
-        /*数据回调*/
+        /* 数据回调 */
         observable.subscribe(subscriber);
 
     }
@@ -108,7 +122,7 @@ public class ToolRetrofit {
         HttpLoggingInterceptor loggingInterceptor=new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                Log.d("RxRetrofit","Retrofit====Message:"+message);
+                Log.d("ToolRetrofit","Retrofit====Message:"+message);
             }
         });
         loggingInterceptor.setLevel(level);

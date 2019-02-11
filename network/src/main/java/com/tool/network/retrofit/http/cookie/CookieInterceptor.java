@@ -15,14 +15,15 @@ import okio.Buffer;
 import okio.BufferedSource;
 
 /**
- * gson持久化截取保存数据
- * Created by WZG on 2016/10/20.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:10
+ * @描述          gson持久化截取保存数据
+ **/
 public class CookieInterceptor implements Interceptor {
     private CookieDbUtil dbUtil;
-    /*是否缓存标识*/
+    /* 是否缓存标识 */
     private boolean cache;
-    /*url*/
+    /* url */
     private String url;
 
     public CookieInterceptor(boolean cache, String url) {
@@ -50,7 +51,7 @@ public class CookieInterceptor implements Interceptor {
             long time=System.currentTimeMillis();
             /*保存和更新本地数据*/
             if(resulte==null){
-                resulte  =new CookieResulte(url,bodyString,time);
+                resulte = new CookieResulte(url,bodyString,time);
                 dbUtil.saveCookie(resulte);
             }else{
                 resulte.setResulte(bodyString);

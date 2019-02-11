@@ -5,18 +5,19 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
- * post請求緩存数据
- * Created by WZG on 2016/10/26.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:11
+ * @描述          post請求緩存数据
+ **/
 @Entity
 public class CookieResulte {
     @Id
     private Long id;
-    /*url*/
+    /* url */
     private String url;
-    /*返回结果*/
+    /* 返回结果 */
     private String resulte;
-    /*时间*/
+    /* 时间 */
     private long time;
 
     public CookieResulte(String url, String resulte, long time) {

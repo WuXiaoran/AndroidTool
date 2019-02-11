@@ -10,9 +10,10 @@ import rx.functions.Func1;
 import rx.functions.Func2;
 
 /**
- * retry条件
- * Created by WZG on 2016/10/17.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:09
+ * @描述          retry条件
+ **/
 public class RetryWhenNetworkException implements Func1<Observable<? extends Throwable>, Observable<?>> {
 //    retry次数
     private int count = 3;
@@ -50,7 +51,7 @@ public class RetryWhenNetworkException implements Func1<Observable<? extends Thr
                         if ((wrapper.throwable instanceof ConnectException
                                 || wrapper.throwable instanceof SocketTimeoutException
                                 || wrapper.throwable instanceof TimeoutException)
-                                && wrapper.index < count + 1) { //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
+                                && wrapper.index < count + 1) { // 如果超出重试次数也抛出错误，否则默认是会进入onCompleted
                             return Observable.timer(delay + (wrapper.index - 1) * increaseDelay, TimeUnit.MILLISECONDS);
 
                         }

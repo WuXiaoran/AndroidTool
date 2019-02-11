@@ -10,9 +10,10 @@ import okio.Okio;
 import okio.Source;
 
 /**
- * 自定义精度的body
- * @author wzg
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:03
+ * @描述          自定义精度的body
+ **/
 public class DownloadResponseBody extends ResponseBody {
 
     private ResponseBody responseBody;

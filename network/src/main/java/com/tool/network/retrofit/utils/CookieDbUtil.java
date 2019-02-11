@@ -14,11 +14,10 @@ import org.greenrobot.greendao.query.QueryBuilder;
 import java.util.List;
 
 /**
- * 数据缓存
- * 数据库工具类-geendao运用
- * Created by WZG on 2016/10/25.
- */
-
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:26
+ * @描述          cookie 数据库工具类-geendao运用
+ **/
 public class CookieDbUtil {
     private static CookieDbUtil db;
     private final static String dbName = "tests_db";

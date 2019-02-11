@@ -3,9 +3,10 @@ package com.tool.network.retrofit.listener;
 import rx.Observable;
 
 /**
- * 成功回调处理
- * Created by WZG on 2016/7/16.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:12
+ * @描述          成功回调处理
+ **/
 public abstract class HttpOnNextListener<T> {
     /**
      * 成功后回调方法
@@ -42,6 +43,15 @@ public abstract class HttpOnNextListener<T> {
      * 取消回調
      */
     public void onCancel(){
+
+    }
+
+    /**
+     * 上传进度
+     * @param currentBytesCount
+     * @param totalBytesCount
+     */
+    public void onProgress(long currentBytesCount, long totalBytesCount){
 
     }
 

@@ -6,9 +6,10 @@ import okhttp3.Interceptor;
 import okhttp3.Response;
 
 /**
- * 成功回调处理
- * Created by WZG on 2016/10/20.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:02
+ * @描述          成功回调处理
+ **/
 public class DownloadInterceptor implements Interceptor {
 
     private DownloadProgressListener listener;

@@ -12,17 +12,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * get缓存方式拦截器
- * Created by WZG on 2016/10/26.
- */
-
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:09
+ * @描述          get缓存方式拦截器
+ **/
 public class CacheInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
 
-        if (!AppUtil.isNetworkAvailable(ToolRetrofit.getApplication())) {//没网强制从缓存读取(必须得写，不然断网状态下，退出应用，或者等待一分钟后，就获取不到缓存）
+        if (!AppUtil.isNetworkAvailable(ToolRetrofit.getApplication())) {// 没网强制从缓存读取(必须得写，不然断网状态下，退出应用，或者等待一分钟后，就获取不到缓存）
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();
@@ -30,7 +30,7 @@ public class CacheInterceptor implements Interceptor {
         Response response = chain.proceed(request);
         Response responseLatest;
         if (AppUtil.isNetworkAvailable(ToolRetrofit.getApplication())) {
-            int maxAge = 60; //有网失效一分钟
+            int maxAge = 60; // 有网失效一分钟
             responseLatest = response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")

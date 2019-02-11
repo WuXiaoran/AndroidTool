@@ -1,5 +1,7 @@
 package com.tool.network.retrofit.listener.upload;
 
+import com.tool.network.retrofit.listener.HttpOnNextListener;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -11,18 +13,18 @@ import okio.Okio;
 import okio.Sink;
 
 /**
- * 自定义回调加载速度类RequestBody
- * Created by WZG on 2016/10/20.
- */
-
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:11
+ * @描述          自定义回调加载速度类RequestBody
+ **/
 public class ProgressRequestBody extends RequestBody {
-    //实际起作用的RequestBody
+    // 实际起作用的RequestBody
     private RequestBody delegate;
-    //进度回调接口
-    private final UploadProgressListener progressListener;
+    // 进度回调接口
+    private final HttpOnNextListener progressListener;
     private CountingSink countingSink;
 
-    public ProgressRequestBody(RequestBody requestBody, UploadProgressListener progressListener) {
+    public ProgressRequestBody(RequestBody requestBody, HttpOnNextListener progressListener) {
         this.delegate = requestBody;
         this.progressListener = progressListener;
     }

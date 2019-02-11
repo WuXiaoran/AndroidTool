@@ -5,14 +5,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * 方法工具类
- * Created by WZG on 2016/10/31.
- */
-
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:14
+ * @描述          方法工具类
+ **/
 public class AppUtil {
     /**
      * 描述：判断网络是否有效.
-     *
      * @return true, if is network available
      */
     public static boolean isNetworkAvailable(Context context) {

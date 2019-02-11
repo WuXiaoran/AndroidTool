@@ -32,4 +32,5 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.10'
     implementation 'com.github.WuXiaoran:AndroidTool:v0.1'
     implementation project(':network')
+    compile 'com.tencent.bugly:crashreport:latest.release'
 }

@@ -9,33 +9,33 @@ import org.greenrobot.greendao.annotation.Transient;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
- * apk下载请求数据基础类
- * Created by WZG on 2016/10/20.
- */
-
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:03
+ * @描述          下载请求数据基础类
+ **/
 @Entity
 public class DownInfo{
     @Id
     private long id;
-    /*存储位置*/
+    /* 存储位置 */
     private String savePath;
-    /*文件总长度*/
+    /* 文件总长度 */
     private long countLength;
-    /*下载长度*/
+    /* 下载长度 */
     private long readLength;
-    /*下载唯一的HttpService*/
+    /* 下载唯一的HttpService */
     @Transient
     private HttpDownService service;
     /*回调监听*/
     @Transient
     private HttpDownOnNextListener listener;
-    /*超时设置*/
+    /* 超时设置 */
     private  int connectonTime=6;
-    /*state状态数据库保存*/
+    /* state状态数据库保存 */
     private int stateInte;
-    /*url*/
+    /* url */
     private String url;
-    /*是否需要实时更新下载进度,避免线程的多次切换*/
+    /* 是否需要实时更新下载进度,避免线程的多次切换 */
     private boolean updateProgress;
 
     public DownInfo(String url,HttpDownOnNextListener listener) {

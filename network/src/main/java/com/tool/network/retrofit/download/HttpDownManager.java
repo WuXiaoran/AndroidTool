@@ -31,19 +31,20 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * http下载处理类
- * Created by WZG on 2016/7/16.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:06
+ * @描述          http下载处理类
+ **/
 public class HttpDownManager {
-    /*记录下载数据*/
+    /* 记录下载数据 */
     private Set<DownInfo> downInfos;
-    /*回调sub队列*/
+    /* 回调sub队列 */
     private HashMap<String, ProgressDownSubscriber> subMap;
-    /*单利对象*/
+    /* 单例对象 */
     private volatile static HttpDownManager INSTANCE;
-    /*数据库类*/
+    /* 数据库类 */
     private DbDownUtil db;
-    /*下载进度回掉主线程*/
+    /* 下载进度回掉主线程 */
     private Handler handler;
 
     private HttpDownManager() {
@@ -55,8 +56,6 @@ public class HttpDownManager {
 
     /**
      * 获取单例
-     *
-     * @return
      */
     public static HttpDownManager getInstance() {
         if (INSTANCE == null) {
@@ -72,25 +71,26 @@ public class HttpDownManager {
 
     /**
      * 开始下载
+     * @param info      下载数据实体
      */
     public void startDown(final DownInfo info) {
-        /*正在下载不处理*/
+        /* 正在下载不处理 */
         if (info == null || subMap.get(info.getUrl()) != null) {
             subMap.get(info.getUrl()).setDownInfo(info);
             return;
         }
-        /*添加回调处理类*/
+        /* 添加回调处理类 */
         ProgressDownSubscriber subscriber = new ProgressDownSubscriber(info,handler);
-        /*记录回调sub*/
+        /* 记录回调sub */
         subMap.put(info.getUrl(), subscriber);
-        /*获取service，多次请求公用一个sercie*/
+        /* 获取service，多次请求公用一个sercie */
         HttpDownService httpService;
         if (downInfos.contains(info)) {
             httpService = info.getService();
         } else {
             DownloadInterceptor interceptor = new DownloadInterceptor(subscriber);
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            //手动创建一个OkHttpClient并设置超时时间
+            // 手动创建一个OkHttpClient并设置超时时间
             builder.connectTimeout(info.getConnectonTime(), TimeUnit.SECONDS);
             builder.addInterceptor(interceptor);
 
@@ -104,14 +104,14 @@ public class HttpDownManager {
             info.setService(httpService);
             downInfos.add(info);
         }
-        /*得到rx对象-上一次下載的位置開始下載*/
+        /* 得到rx对象-上一次下載的位置開始下載 */
         httpService.download("bytes=" + info.getReadLength() + "-", info.getUrl())
-                /*指定线程*/
+                /* 指定线程 */
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
-                   /*失败后的retry配置*/
+                   /* 失败后的retry配置 */
                 .retryWhen(new RetryWhenNetworkException())
-                /*读取下载写入文件*/
+                /* 读取下载写入文件 */
                 .map(new Func1<ResponseBody, DownInfo>() {
                     @Override
                     public DownInfo call(ResponseBody responseBody) {
@@ -119,9 +119,9 @@ public class HttpDownManager {
                         return info;
                     }
                 })
-                /*回调线程*/
+                /* 回调线程 */
                 .observeOn(AndroidSchedulers.mainThread())
-                /*数据回调*/
+                /* 数据回调 */
                 .subscribe(subscriber);
 
     }
@@ -129,6 +129,7 @@ public class HttpDownManager {
 
     /**
      * 停止下载
+     * @param info      下载数据实体
      */
     public void stopDown(DownInfo info) {
         if (info == null) return;
@@ -146,8 +147,7 @@ public class HttpDownManager {
 
     /**
      * 暂停下载
-     *
-     * @param info
+     * @param info      下载数据实体
      */
     public void pause(DownInfo info) {
         if (info == null) return;
@@ -187,7 +187,6 @@ public class HttpDownManager {
 
     /**
      * 返回全部正在下载的数据
-     *
      * @return
      */
     public Set<DownInfo> getDownInfos() {
@@ -196,8 +195,7 @@ public class HttpDownManager {
 
     /**
      * 移除下载数据
-     *
-     * @param info
+     * @param info      下载数据实体
      */
     public void remove(DownInfo info) {
         subMap.remove(info.getUrl());
@@ -207,9 +205,8 @@ public class HttpDownManager {
 
     /**
      * 写入文件
-     *
-     * @param file
-     * @param info
+     * @param file          文件
+     * @param info          数据实体
      * @throws IOException
      */
     public void writeCaches(ResponseBody responseBody, File file, DownInfo info) {

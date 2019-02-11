@@ -22,10 +22,15 @@ import rx.Subscriber;
  * 调用者自己对请求数据进行处理
  * Created by WZG on 2016/7/16.
  */
+/**
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:12
+ * @描述          断点下载处理类Subscriber,用于在Http请求开始时，自动显示一个ProgressDialog,在Http请求结束是，关闭ProgressDialog,调用者自己对请求数据进行处理
+ **/
 public class ProgressDownSubscriber<T> extends Subscriber<T> implements DownloadProgressListener {
-    //弱引用结果回调
+    // 弱引用结果回调
     private SoftReference<HttpDownOnNextListener> mSubscriberOnNextListener;
-    /*下载数据*/
+    /* 下载数据 */
     private DownInfo downInfo;
     private Handler handler;
 
@@ -86,7 +91,6 @@ public class ProgressDownSubscriber<T> extends Subscriber<T> implements Download
 
     /**
      * 将onNext方法中的返回结果交给Activity或Fragment自己处理
-     *
      * @param t 创建Subscriber时的泛型类型
      */
     @Override

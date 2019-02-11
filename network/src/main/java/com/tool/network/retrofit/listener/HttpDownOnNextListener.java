@@ -1,9 +1,10 @@
 package com.tool.network.retrofit.listener;
 
 /**
- * 下载过程中的回调处理
- * Created by WZG on 2016/10/20.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:12
+ * @描述          下载过程中的回调处理
+ **/
 public abstract class HttpDownOnNextListener<T> {
     /**
      * 成功后回调方法

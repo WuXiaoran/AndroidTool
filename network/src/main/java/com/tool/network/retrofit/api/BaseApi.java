@@ -57,11 +57,10 @@ public abstract class BaseApi<T> implements Func1<BaseResultEntity<T>, T> {
 
     /**
      * 设置参数
-     * @param retrofit
+     * @param retrofit      通过retrofit对象去获得接口类实现
      * @return
      */
     public abstract Observable getObservable(Retrofit retrofit);
-
 
     public int getCookieNoNetWorkTime() {
         return cookieNoNetWorkTime;
@@ -205,9 +204,10 @@ public abstract class BaseApi<T> implements Func1<BaseResultEntity<T>, T> {
 
     @Override
     public T call(BaseResultEntity<T> httpResult) {
-        if (httpResult.getRet() == 0) {
-            throw new HttpTimeException(httpResult.getMsg());
+        if (httpResult == null) return null;
+        if (httpResult.getCode() == 0) {
+            throw new HttpTimeException(httpResult.getMessage());
         }
-        return httpResult.getData();
+        return httpResult.getResult();
     }
 }

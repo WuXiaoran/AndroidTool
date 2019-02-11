@@ -2,9 +2,10 @@ package com.tool.network.retrofit.download.DownLoadListener;
 
 
 /**
- * 成功回调处理
- * Created by WZG on 2016/10/20.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:02
+ * @描述          成功回调处理
+ **/
 public interface DownloadProgressListener {
     /**
      * 下载进度

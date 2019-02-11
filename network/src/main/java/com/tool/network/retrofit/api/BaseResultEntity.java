@@ -1,38 +1,39 @@
 package com.tool.network.retrofit.api;
 
 /**
- * 回调信息统一封装类
- * Created by WZG on 2016/7/16.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:01
+ * @描述          回调信息统一封装类
+ **/
 public class BaseResultEntity<T> {
     // 判断标示
-    private int ret;
+    private int code;
     // 提示信息
-    private String msg;
+    private String message;
     // 显示数据（用户需要关心的数据）
-    private T data;
+    private T result;
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public T getData() {
-        return data;
+    public T getResult() {
+        return result;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setResult(T result) {
+        this.result = result;
     }
 
-    public int getRet() {
-        return ret;
+    public int getCode() {
+        return code;
     }
 
-    public void setRet(int ret) {
-        this.ret = ret;
+    public void setCode(int code) {
+        this.code = code;
     }
 }

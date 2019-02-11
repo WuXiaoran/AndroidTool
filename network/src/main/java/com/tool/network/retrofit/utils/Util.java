@@ -8,8 +8,8 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tool.network.retrofit.ContentType;
-import com.tool.network.retrofit.ResponseCallback;
-import com.tool.network.retrofit.UploadRequestBody;
+import com.tool.network.retrofit.listener.HttpOnNextListener;
+import com.tool.network.retrofit.listener.upload.ProgressRequestBody;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class Util {
     }
 
     /**
-     * createPart From String
+     * createImagePart From String
      * @param descriptionString
      * @return
      */
@@ -177,7 +177,7 @@ public class Util {
      * @return UploadRequestBody
      */
     @NonNull
-    public static UploadRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type) {
+    public static ProgressRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type) {
         return createRequestBody(file, type, null);
     }
 
@@ -188,12 +188,12 @@ public class Util {
      * @return UploadRequestBody
      */
     @NonNull
-    public static UploadRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type, ResponseCallback callback) {
-        return new UploadRequestBody(createBody(file, type), callback);
+    public static ProgressRequestBody createRequestBody(@NonNull File file, @NonNull ContentType type, HttpOnNextListener callback) {
+        return new ProgressRequestBody(createBody(file, type), callback);
     }
 
     @NonNull
-    public static MultipartBody.Part createPart(String partName ,File file) {
+    public static MultipartBody.Part createImagePart(String partName , File file) {
         // create RequestBody instance from file
                 RequestBody requestFile =
                 RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA + "; charset=utf-8"), file);
@@ -202,12 +202,24 @@ public class Util {
     }
 
     @NonNull
-    public static MultipartBody.Part createPart(String partName ,File file, @NonNull ContentType type) {
+    public static MultipartBody.Part createImagePart(String partName , File file, @NonNull ContentType type) {
         // create RequestBody instance from file
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse(typeToString(type) + "; charset=utf-8"), file);
         // MultipartBody.Part is used to send also the actual file name
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
+
+    @NonNull
+    public static MultipartBody.Part createImagePart(String partName , File file, @NonNull HttpOnNextListener listener) {
+        RequestBody requestBody = createBody(file,ContentType.IMAGE);
+        return MultipartBody.Part.createFormData(partName, file.getName(), new ProgressRequestBody(requestBody,listener));
+    }
+
+    @NonNull
+    public static MultipartBody.Part createTypePart(String partName , File file, ContentType contentType,@NonNull HttpOnNextListener listener) {
+        RequestBody requestBody = createBody(file,contentType);
+        return MultipartBody.Part.createFormData(partName, file.getName(), new ProgressRequestBody(requestBody,listener));
     }
 
     @NonNull
@@ -233,12 +245,12 @@ public class Util {
      * @return  Map<String, MultipartBody.Part>
      */
     @NonNull
-    public static  Map<String, MultipartBody.Part> createParts(String partName , Map<String, File> maps, @NonNull ContentType type, ResponseCallback callback ) {
+    public static  Map<String, MultipartBody.Part> createParts(String partName , Map<String, File> maps, @NonNull ContentType type, HttpOnNextListener callback ) {
         // create RequestBody instance from file
         Map<String, MultipartBody.Part> parts = new HashMap<>();
         if (maps != null && maps.size() > 0) {
             Iterator<String> keys = maps.keySet().iterator();
-            UploadRequestBody requestBody = null;
+            ProgressRequestBody requestBody = null;
             while(keys.hasNext()){
                 String i = keys.next();
                 File file = maps.get(i);
@@ -265,11 +277,11 @@ public class Util {
      * @return  Map<String, MultipartBody.Part>
      */
     @NonNull
-    public static List<MultipartBody.Part> createPartLists(String partName , List<File> list, @NonNull ContentType type, ResponseCallback callback ) {
+    public static List<MultipartBody.Part> createPartLists(String partName , List<File> list, @NonNull ContentType type, HttpOnNextListener callback ) {
         List<MultipartBody.Part> parts = new ArrayList<>();
         if (list!= null && list.size() > 0) {
 
-            UploadRequestBody requestBody = null;
+            ProgressRequestBody requestBody = null;
             for (File file: list) {
                 if (!FileUtil.exists(file)) {
                     throw new Resources.NotFoundException(file.getPath() + "file 路径无法找到");
@@ -284,18 +296,6 @@ public class Util {
         }
         return parts;
     }
-
-
-    /** createNovateRequestBody
-     * @param requestBody requestBody
-     * @param callback  ResponseCallback
-     * @return UploadRequestBody
-     */
-    @NonNull
-    public static UploadRequestBody createNovateRequestBody(RequestBody requestBody, ResponseCallback callback) {
-        return new UploadRequestBody(requestBody, callback);
-    }
-
 
     public static <T> List<T> jsonToList(String json, Class<T> clazz) {
         if (null == json) {

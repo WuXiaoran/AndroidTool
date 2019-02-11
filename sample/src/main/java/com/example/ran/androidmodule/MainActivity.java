@@ -4,30 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.transition.Transition;
+import com.example.ran.androidmodule.retrofit.TestApi;
+import com.example.ran.androidmodule.retrofit.UploadResulte;
 import com.example.ran.androidmodule.utils.GlideUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.tool.network.retrofit.ToolRetrofit;
 import com.tool.network.retrofit.listener.HttpOnNextListener;
-import com.tool.network.retrofit.listener.upload.ProgressRequestBody;
-import com.tool.network.retrofit.listener.upload.UploadProgressListener;
-import com.tool.network.retrofit.utils.Util;
 import com.tool.picture.components.photoviewer.PhotoViewer;
 import com.tool.picture.components.progressimg.CircleProgressView;
 import com.tool.picture.components.progressimg.OnProgressListener;
@@ -46,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends RxAppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private ProgressImageView img;
     private CircleProgressView circleProgressView;
@@ -176,35 +172,33 @@ public class MainActivity extends RxAppCompatActivity {
         // 编辑-》onActivityResult有相关示例
         // 预览-》借用了banner的点击事件
         ///// 富文本 end /////
-        ToolRetrofit.http(new TestApi().getAllVedioBys(true,this,new HttpOnNextListener() {
-            @Override
-            public void onNext(Object o) {
+        //// 普通请求 ////
+//        ToolRetrofit.http(new TestApi().getSong(1,this,new HttpOnNextListener() {
+//            @Override
+//            public void onNext(Object o) {
+//                Log.e(TAG,"请求成功");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                super.onError(e);
+//            }
+//        }));
+        //// 上传文件 ////
+        String url = "http://workflow.tjcclz.com/GWWorkPlatform/NoticeServlet?GWType=wifiUploadFile";
+        File file = new File("/storage/emulated/0/Pictures/1540550492380.jpg");
+        ToolRetrofit.http(new TestApi().uploadImage(url,file, this, new HttpOnNextListener() {
 
+            @Override
+            public void onNext(Object object) {
+                Log.e(TAG,"上传成功");
+            }
+
+            @Override
+            public void onProgress(long currentBytesCount, long totalBytesCount) {
+                super.onProgress(currentBytesCount, totalBytesCount);
             }
         }));
-
-        File file = new File("/storage/emulated/0/Download/11.jpg");
-
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
-        MultipartBody.Part part = Util.createPart("file_name",file);
-//        MultipartBody.Part part = MultipartBody.Part.createFormData("file_name", file.getName(), new ProgressRequestBody
-//                (requestBody,
-//                        new UploadProgressListener() {
-//                            @Override
-//                            public void onProgress(final long currentBytesCount, final long totalBytesCount) {
-//
-//                                /*回到主线程中，可通过timer等延迟或者循环避免快速刷新数据*/
-//                                Observable.just(currentBytesCount).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Long>() {
-//
-//                                    @Override
-//                                    public void call(Long aLong) {
-////                                        tvMsg.setText("提示:上传中");
-////                                        progressBar.setMax((int) totalBytesCount);
-////                                        progressBar.setProgress((int) currentBytesCount);
-//                                    }
-//                                });
-//                            }
-//                        }));
     }
 
     public class GlideImageLoader extends ImageLoader {

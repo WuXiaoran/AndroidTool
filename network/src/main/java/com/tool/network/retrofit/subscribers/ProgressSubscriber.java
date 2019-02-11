@@ -25,27 +25,25 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * 用于在Http请求开始时，自动显示一个ProgressDialog
- * 在Http请求结束是，关闭ProgressDialog
- * 调用者自己对请求数据进行处理
- * Created by WZG on 2016/7/16.
- */
+ * @作者          吴孝然
+ * @创建日期      2019/2/11 10:13
+ * @描述          用于在Http请求开始时，自动显示一个ProgressDialog,在Http请求结束是，关闭ProgressDialog,调用者自己对请求数据进行处理
+ **/
 public class ProgressSubscriber<T> extends Subscriber<T> {
-    /*是否弹框*/
+    /* 是否弹框 */
     private boolean showPorgress = true;
-    /* 软引用回调接口*/
+    /* 软引用回调接口 */
     private SoftReference<HttpOnNextListener> mSubscriberOnNextListener;
-    /*软引用反正内存泄露*/
+    /* 软引用反正内存泄露 */
     private SoftReference<RxAppCompatActivity> mActivity;
-    /*加载框可自己定义*/
+    /* 加载框可自己定义 */
     private ProgressDialog pd;
-    /*请求数据*/
+    /* 请求数据 */
     private BaseApi api;
 
 
     /**
      * 构造
-     *
      * @param api
      */
     public ProgressSubscriber(BaseApi api) {
@@ -122,7 +120,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
                 if (time < api.getCookieNetWorkTime()) {
                     if (mSubscriberOnNextListener.get() != null) {
                         BaseResultEntity resultEntity = new Gson().fromJson(cookieResulte.getResulte(), new TypeToken<BaseResultEntity<T>>() {}.getType());
-                        mSubscriberOnNextListener.get().onCacheNext(resultEntity.getData());
+                        mSubscriberOnNextListener.get().onCacheNext(resultEntity.getResult());
                     }
                     onCompleted();
                     unsubscribe();
@@ -172,7 +170,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
                     if (time < api.getCookieNoNetWorkTime()) {
                         if (mSubscriberOnNextListener.get() != null) {
                             BaseResultEntity resultEntity = new Gson().fromJson(cookieResulte.getResulte(), new TypeToken<BaseResultEntity<T>>() {}.getType());
-                            mSubscriberOnNextListener.get().onCacheNext(resultEntity.getData());
+                            mSubscriberOnNextListener.get().onCacheNext(resultEntity.getResult());
                         }
                     } else {
                         CookieDbUtil.getInstance().deleteCookie(cookieResulte);
@@ -194,8 +192,9 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         } else if (e instanceof ConnectException) {
             Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "错误" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "错误:" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        e.printStackTrace();
         if (mSubscriberOnNextListener.get() != null) {
             mSubscriberOnNextListener.get().onError(e);
         }
