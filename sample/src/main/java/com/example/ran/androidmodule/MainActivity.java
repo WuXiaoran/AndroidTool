@@ -9,19 +9,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.transition.Transition;
-import com.example.ran.androidmodule.retrofit.TestApi;
-import com.example.ran.androidmodule.retrofit.UploadResulte;
 import com.example.ran.androidmodule.utils.GlideUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.tool.network.retrofit.ToolRetrofit;
-import com.tool.network.retrofit.listener.HttpOnNextListener;
+import com.tool.network.retrofit.download.DownInfo;
+import com.tool.network.retrofit.download.HttpDownManager;
+import com.tool.network.retrofit.listener.HttpDownOnNextListener;
+import com.tool.network.retrofit.utils.DbDownUtil;
 import com.tool.picture.components.photoviewer.PhotoViewer;
 import com.tool.picture.components.progressimg.CircleProgressView;
 import com.tool.picture.components.progressimg.OnProgressListener;
@@ -185,20 +186,67 @@ public class MainActivity extends RxAppCompatActivity {
 //            }
 //        }));
         //// 上传文件 ////
-        String url = "http://workflow.tjcclz.com/GWWorkPlatform/NoticeServlet?GWType=wifiUploadFile";
-        File file = new File("/storage/emulated/0/Pictures/1540550492380.jpg");
-        ToolRetrofit.http(new TestApi().uploadImage(url,file, this, new HttpOnNextListener() {
-
+//        String url = "http://workflow.tjcclz.com/GWWorkPlatform/NoticeServlet?GWType=wifiUploadFile";
+//        File file = new File("/storage/emulated/0/Pictures/1540550492380.jpg");
+//        ToolRetrofit.http(new TestApi().uploadImage(url,file, this, new HttpOnNextListener() {
+//
+//            @Override
+//            public void onNext(Object object) {
+//                Log.e(TAG,"上传成功");
+//            }
+//
+//            @Override
+//            public void onProgress(long currentBytesCount, long totalBytesCount) {
+//                super.onProgress(currentBytesCount, totalBytesCount);
+//            }
+//        }));
+        //// 断点续传 ////
+        File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "test" + 1 + ".mp4");
+        DownInfo apkApi = new DownInfo("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+        apkApi.setUpdateProgress(true);
+        apkApi.setSavePath(outputFile.getAbsolutePath());
+        DbDownUtil.getInstance().save(apkApi);
+        apkApi.setListener(new HttpDownOnNextListener<DownInfo>() {
             @Override
-            public void onNext(Object object) {
-                Log.e(TAG,"上传成功");
+            public void onNext(DownInfo downInfo) {
+                Log.e(TAG,"提示：下载完成/文件地址->" + downInfo.getSavePath());
             }
 
             @Override
-            public void onProgress(long currentBytesCount, long totalBytesCount) {
-                super.onProgress(currentBytesCount, totalBytesCount);
+            public void onStart() {
+                Log.e(TAG,"提示：开始下载");
             }
-        }));
+
+            @Override
+            public void onComplete() {
+                Log.e(TAG,"提示：下载结束");
+            }
+
+            @Override
+            public void updateProgress(long readLength, long countLength) {
+                Log.e(TAG,"提示：下载中，当前下载->" + readLength + "，总下载->" + countLength);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.e(TAG,"提示：下载出错->" + e.getMessage());
+            }
+
+            @Override
+            public void onPuase() {
+                super.onPuase();
+                Log.e(TAG,"提示：下载暂停");
+            }
+
+            @Override
+            public void onStop() {
+                super.onStop();
+                Log.e(TAG,"提示：下载停止");
+            }
+        });
+        HttpDownManager.getInstance().startDown(apkApi);
     }
 
     public class GlideImageLoader extends ImageLoader {

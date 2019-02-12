@@ -126,7 +126,6 @@ public class HttpDownManager {
 
     }
 
-
     /**
      * 停止下载
      * @param info      下载数据实体

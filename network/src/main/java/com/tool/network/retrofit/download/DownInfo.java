@@ -15,7 +15,7 @@ import org.greenrobot.greendao.annotation.Generated;
  **/
 @Entity
 public class DownInfo{
-    @Id
+    @Id(autoincrement = true)
     private long id;
     /* 存储位置 */
     private String savePath;
