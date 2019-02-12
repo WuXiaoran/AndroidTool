@@ -123,7 +123,6 @@ public class HttpDownManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 /* 数据回调 */
                 .subscribe(subscriber);
-
     }
 
     /**
@@ -142,7 +141,6 @@ public class HttpDownManager {
         /*保存数据库信息和本地文件*/
         db.save(info);
     }
-
 
     /**
      * 暂停下载

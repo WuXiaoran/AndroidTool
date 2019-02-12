@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
+group='com.github.WuXiaoran'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -10,9 +11,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
