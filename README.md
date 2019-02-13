@@ -114,3 +114,89 @@ img.load("https://www.duba.com/static/images/public/20181115/4a5d2d7608a3d088c0d
     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) { }
 });
 ```
+
+普通请求
+---
+```JavaScript
+ToolRetrofit.http(new TestApi().getSong(1,this,new HttpOnNextListener() {
+    @Override
+    public void onNext(Object o) {
+        Log.e(TAG,"请求成功");
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        super.onError(e);
+    }
+}));
+```
+
+上传图片（图片）
+---
+```JavaScript
+String url = "http://workflow.tjcclz.com/GWWorkPlatform/NoticeServlet?GWType=wifiUploadFile";
+File file = new File("/storage/emulated/0/Pictures/1540550492380.jpg");
+ToolRetrofit.http(new TestApi().uploadImage(url,file, this, new HttpOnNextListener() {
+
+    @Override
+    public void onNext(Object object) {
+        Log.e(TAG,"上传成功");
+    }
+
+    @Override
+    public void onProgress(long currentBytesCount, long totalBytesCount) {
+        super.onProgress(currentBytesCount, totalBytesCount);
+    }
+}));
+```
+
+断点续传（音频）
+---
+```JavaScript
+File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "test" + 1 + ".mp4");
+DownInfo apkApi = new DownInfo("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+apkApi.setUpdateProgress(true);
+apkApi.setSavePath(outputFile.getAbsolutePath());
+DbDownUtil.getInstance().save(apkApi);
+apkApi.setListener(new HttpDownOnNextListener<DownInfo>() {
+    @Override
+    public void onNext(DownInfo downInfo) {
+        Log.e(TAG,"提示：下载完成/文件地址->" + downInfo.getSavePath());
+    }
+
+    @Override
+    public void onStart() {
+        Log.e(TAG,"提示：开始下载");
+    }
+
+    @Override
+    public void onComplete() {
+        Log.e(TAG,"提示：下载结束");
+    }
+
+    @Override
+    public void updateProgress(long readLength, long countLength) {
+        Log.e(TAG,"提示：下载中，当前下载->" + readLength + "，总下载->" + countLength);
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        super.onError(e);
+        Log.e(TAG,"提示：下载出错->" + e.getMessage());
+    }
+
+    @Override
+    public void onPuase() {
+        super.onPuase();
+        Log.e(TAG,"提示：下载暂停");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e(TAG,"提示：下载停止");
+    }
+});
+HttpDownManager.getInstance().startDown(apkApi);
+```
