@@ -28,9 +28,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    //    implementation project(':picture')
+        implementation project(':picture')
     implementation 'com.youth.banner:banner:1.4.10'
-    implementation 'com.github.WuXiaoran:AndroidTool:v0.2.3'
-//    implementation project(':network')
+    implementation project(':network')
     compile 'com.tencent.bugly:crashreport:latest.release'
 }
