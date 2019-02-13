@@ -16,7 +16,7 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class DownInfo{
     @Id(autoincrement = true)
-    private long id;
+    private Long id;
     /* 存储位置 */
     private String savePath;
     /* 文件总长度 */
@@ -66,8 +66,8 @@ public class DownInfo{
         stateInte=DownState.START.getState();
     }
 
-    @Generated(hash = 1860227052)
-    public DownInfo(long id, String savePath, long countLength, long readLength,
+    @Generated(hash = 1248697547)
+    public DownInfo(Long id, String savePath, long countLength, long readLength,
             int connectonTime, int stateInte, String url, boolean updateProgress) {
         this.id = id;
         this.savePath = savePath;
@@ -168,7 +168,7 @@ public class DownInfo{
         this.readLength = readLength;
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -186,5 +186,9 @@ public class DownInfo{
 
     public boolean getUpdateProgress() {
         return this.updateProgress;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
